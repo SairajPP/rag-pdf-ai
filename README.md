@@ -1,127 +1,131 @@
-RAG PDF AI — Groq + Qdrant + FastAPI
+# RAG PDF AI — Groq + Qdrant + FastAPI
 
 A Retrieval-Augmented Generation (RAG) system that:
 
-Ingests PDFs
+- Ingests PDFs  
+- Chunks and embeds text using SentenceTransformers  
+- Stores vectors in Qdrant  
+- Retrieves relevant context  
+- Generates answers using Groq LLM (Llama 3.1)  
+- Provides a Streamlit UI  
 
-Chunks and embeds text using SentenceTransformers
+---
 
-Stores vectors in Qdrant
+## Architecture
 
-Retrieves relevant context
+PDF → Chunk → Embed → Qdrant  
+Question → Embed → Search → Context → Groq LLM → Answer  
 
-Generates answers using Groq LLM (Llama 3.1)
+---
 
-Provides a Streamlit UI
+## Tech Stack
 
-Architecture
-PDF → Chunk → Embed → Qdrant
-                        ↓
-Question → Embed → Search → Context → Groq LLM → Answer
+- FastAPI  
+- Inngest (event-driven orchestration)  
+- Qdrant (vector database)  
+- SentenceTransformers (embeddings)  
+- Groq LLM (Llama 3.1-8B-Instant)  
+- Streamlit (frontend)  
 
-Tech Stack
+---
 
-FastAPI
+## Setup Instructions
 
-Inngest (event-driven orchestration)
+### 1. Clone Repository
 
-Qdrant (vector database)
+git clone https://github.com/SairajPP/rag-pdf-ai.git  
+cd rag-pdf-ai  
 
-SentenceTransformers (embeddings)
+---
 
-Groq LLM (Llama 3.1-8B-Instant)
+### 2. Create Virtual Environment
 
-Streamlit (frontend)
+python -m venv .venv  
+.venv\Scripts\activate  
 
-Setup Instructions
-1. Clone Repository
-git clone https://github.com/SairajPP/rag-pdf-ai.git
-cd rag-pdf-ai
+---
 
-2. Create Virtual Environment
-python -m venv .venv
-.venv\Scripts\activate
+### 3. Install Dependencies
 
-3. Install Dependencies
-pip install -r requirements.txt
+pip install -r requirements.txt  
 
-4. Add Environment Variables
+---
 
-Create a .env file:
+### 4. Add Environment Variables
 
-GROQ_API_KEY=your_groq_key_here
+Create a `.env` file:
 
+GROQ_API_KEY=your_groq_key_here  
 
-Do not commit .env to GitHub.
+Important:
+- Do not commit `.env` to GitHub.
+- Add `.env` to `.gitignore`.
 
-5. Run Qdrant (Docker)
-docker run -d \
-  --name qdrant \
-  -p 6333:6333 \
-  qdrant/qdrant
+---
 
+### 5. Run Qdrant (Docker)
 
-Verify:
+docker run -d --name qdrant -p 6333:6333 qdrant/qdrant  
 
-http://localhost:6333
+Verify in browser:
+http://localhost:6333  
 
-6. Start Backend
-uvicorn main:app --reload
+---
 
-7. Start Streamlit UI
-streamlit run streamlit_app.py
+### 6. Start Backend
 
-Features
+uvicorn main:app --reload  
 
-Event-driven ingestion via Inngest
+---
 
-Async-safe Groq LLM calls
+### 7. Start Streamlit UI
 
-Custom Pydantic models
+streamlit run streamlit_app.py  
 
-Local embedding model (no OpenAI dependency)
+---
 
-Fully self-hostable
+## Features
 
-Example Query
+- Event-driven ingestion via Inngest  
+- Async-safe Groq LLM calls  
+- Custom Pydantic models  
+- Local embedding model (no OpenAI dependency)  
+- Fully self-hostable  
+
+---
+
+## Example Query
 
 Upload a PDF and ask:
 
 What are the key skills mentioned in this resume?
 
-
 The system:
+- Retrieves top-k relevant chunks  
+- Sends context to Groq  
+- Returns grounded answer with sources  
 
-Retrieves top-k relevant chunks
+---
 
-Sends context to Groq
+## Security Notes
 
-Returns grounded answer with sources
+- Store API keys in `.env`
+- Never hardcode secrets
+- Use GitHub secret scanning protection
 
-Security Notes
+---
 
-API keys must be stored in .env
+## Deployment Options
 
-Never hardcode secrets
+- Render (backend)
+- Railway
+- Fly.io
+- AWS EC2
+- Docker container
+- Streamlit Cloud (frontend only)
 
-Ensure .env is included in .gitignore
+---
 
-Deployment Options
-
-You can deploy this on:
-
-Render (backend)
-
-Railway
-
-Fly.io
-
-AWS EC2
-
-Docker container
-
-Streamlit Cloud (frontend only)
-
-License
+## License
 
 MIT License
