@@ -6,7 +6,7 @@ st.set_page_config(page_title="RAG PDF AI", page_icon="📄", layout="centered")
 
 # IMPORTANT: On Streamlit Cloud, set this in "Secrets"
 # Local fallback is for testing
-BACKEND_URL = st.secrets.get("BACKEND_URL", "http://localhost:10000")
+BACKEND_URL = "https://rag-pdf-ai.onrender.com"
 
 st.title("📄 RAG PDF AI")
 st.caption(f"Connected to Backend: `{BACKEND_URL}`")
