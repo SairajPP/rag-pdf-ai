@@ -26,6 +26,15 @@ async def lifespan(app: FastAPI):
     logging.info("Application shutdown")
 
 app = FastAPI(lifespan=lifespan)
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # allow all for now
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # --- INNGEST SETUP ---
 inngest_client = inngest.Inngest(
