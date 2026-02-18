@@ -8,3 +8,4 @@ inngest
 python-dotenv
 llama-index
 pypdf
+requests
