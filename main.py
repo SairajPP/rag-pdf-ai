@@ -128,7 +128,7 @@ async def chat_endpoint(req: ChatRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 # --- SERVE INNGEST ---
-inngest.fast_api.serve(app, inngest_client, functions=[rag_embed_chunks])
+#inngest.fast_api.serve(app, inngest_client, functions=[rag_embed_chunks])
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 10000))
