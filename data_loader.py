@@ -2,21 +2,26 @@ from llama_index.readers.file import PDFReader
 from llama_index.core.node_parser import SentenceSplitter
 from sentence_transformers import SentenceTransformer
 
-
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
 EMBED_DIM = 384
 
-embedding_model = SentenceTransformer(EMBED_MODEL_NAME)
-
+# Global variable to store the model (initially None)
+_model = None
 
 splitter = SentenceSplitter(
     chunk_size=1000,
     chunk_overlap=200
 )
 
+def get_model():
+    """Singleton to load model only when needed."""
+    global _model
+    if _model is None:
+        print("Loading SentenceTransformer model... (Lazy Load)")
+        _model = SentenceTransformer(EMBED_MODEL_NAME)
+    return _model
 
 def load_and_chunk_pdf(path: str) -> list[str]:
-    
     docs = PDFReader().load_data(file=path)
 
     text_blocks = [
@@ -30,13 +35,14 @@ def load_and_chunk_pdf(path: str) -> list[str]:
 
     return chunks
 
-
 def embed_texts(texts: list[str]) -> list[list[float]]:
-    
     if not texts:
         return []
 
-    vectors = embedding_model.encode(
+    # Get the model (loads it if not ready)
+    model = get_model()
+
+    vectors = model.encode(
         texts,
         show_progress_bar=False,
         normalize_embeddings=True  
